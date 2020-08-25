@@ -19,7 +19,9 @@ trait SlickPortfolioAssetRepository extends PortfolioAssetRepository with Databa
     def getByPortfolioId(portfolioId: PortfolioId): IO[RepositoryError, List[PortfolioAsset]] = {
       val query = portfolioAssets.filter(_.portfolioId === portfolioId)
 
-      ZIO.fromDBIO(query.result).provide(self)
+      ZIO
+        .fromDBIO(query.result)
+        .provide(self)
         .map(_.toList)
         .refineOrDie {
           case e: Exception => new RepositoryError(e)

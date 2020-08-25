@@ -21,7 +21,7 @@ trait SlickAssetRepository extends AssetRepository with DatabaseProvider { self 
       }
     }
 
-    val getAll: IO[RepositoryError, List[Asset]] = 
+    val getAll: IO[RepositoryError, List[Asset]] =
       ZIO.fromDBIO(assets.result).provide(self).map(_.toList).refineOrDie {
         case e: Exception => new RepositoryError(e)
       }
@@ -31,7 +31,7 @@ trait SlickAssetRepository extends AssetRepository with DatabaseProvider { self 
 
       ZIO.fromDBIO(query.result).provide(self).map(_.headOption).refineOrDie {
         case e: Exception => new RepositoryError(e)
-      }      
+      }
     }
 
     def getById(id: AssetId): IO[RepositoryError, Option[Asset]] = {
@@ -39,12 +39,12 @@ trait SlickAssetRepository extends AssetRepository with DatabaseProvider { self 
 
       ZIO.fromDBIO(query.result).provide(self).map(_.headOption).refineOrDie {
         case e: Exception => new RepositoryError(e)
-      }      
+      }
     }
 
     def getByIds(ids: Set[AssetId]): IO[RepositoryError, List[Asset]] = {
       val query = assets.filter(_.id inSet ids)
-      
+
       ZIO.fromDBIO(query.result).provide(self).map(_.toList).refineOrDie {
         case e: Exception => new RepositoryError(e)
       }

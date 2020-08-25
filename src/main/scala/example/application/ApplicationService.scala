@@ -16,10 +16,16 @@ object ApplicationService {
   val getAssets: ZIO[AssetRepository, DomainError, List[Asset]] =
     ZIO.accessM[AssetRepository](_.assetRepository.getAll)
 
-  def getPortfolio(portfolioId: PortfolioId): ZIO[AssetRepository with PortfolioAssetRepository, DomainError, PortfolioStatus] =
+  def getPortfolio(
+    portfolioId: PortfolioId
+  ): ZIO[AssetRepository with PortfolioAssetRepository, DomainError, PortfolioStatus] =
     PortfolioService.calculatePortfolioStatus(portfolioId)
 
-  def updatePortfolio(portfolioId: PortfolioId, assetId: AssetId, amount: BigDecimal): ZIO[AssetRepository with PortfolioAssetRepository, DomainError, PortfolioStatus] =
+  def updatePortfolio(
+    portfolioId: PortfolioId,
+    assetId: AssetId,
+    amount: BigDecimal
+  ): ZIO[AssetRepository with PortfolioAssetRepository, DomainError, PortfolioStatus] =
     for {
       _ <- ZIO.accessM[PortfolioAssetRepository](_.portfolioAssetRepository.add(portfolioId, assetId, amount))
       p <- PortfolioService.calculatePortfolioStatus(portfolioId)

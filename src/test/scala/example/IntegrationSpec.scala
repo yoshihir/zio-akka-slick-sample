@@ -15,7 +15,7 @@ import zio.{ Runtime, ZIO }
 import zio.internal.Platform
 
 class IntegrationSpec extends AnyFlatSpec with Matchers with Runtime[Unit] with ScalatestRouteTest with JsonSupport {
-  
+
   override val environment: Unit = Runtime.default.environment
 
   override val platform: Platform = Runtime.default.platform
@@ -29,10 +29,9 @@ class IntegrationSpec extends AnyFlatSpec with Matchers with Runtime[Unit] with 
   class TestEnv extends SlickAssetRepository with SlickPortfolioAssetRepository with TestDatabaseProvider
 
   val testEnv = new TestEnv()
-  val api = new Api(testEnv, 8080)
+  val api     = new Api(testEnv, 8080)
 
-
-  val assets = TableQuery[AssetsTable.Assets]
+  val assets          = TableQuery[AssetsTable.Assets]
   val portfolioAssets = TableQuery[PortfolioAssetsTable.PortfolioAssets]
 
   val setup = {
@@ -46,7 +45,7 @@ class IntegrationSpec extends AnyFlatSpec with Matchers with Runtime[Unit] with 
 
   val setupIO = ZIO.fromDBIO(setup).provide(testEnv)
   this.unsafeRun(setupIO)
-  
+
   "Assets endpoint" should "return a all assets for GET requests to the /assets path" in {
     Get("/assets") ~> api.route ~> check {
       responseAs[List[Asset]] shouldEqual List(Asset(Some(AssetId(1)), "GBPUSD", BigDecimal(100.0)))

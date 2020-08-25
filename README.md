@@ -1,6 +1,4 @@
-# aws-resource-explorer
-
-## 製作中
+# zio-akka-sample
 
 ## 参考
 ## all
