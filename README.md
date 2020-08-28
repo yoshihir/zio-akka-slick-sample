@@ -5,6 +5,7 @@
 https://zio.dev/docs/resources/resources
 
 #### akka + zio + slick
+https://github.com/ScalaConsultants/zio-akka-quickstart.g8
 https://scalac.io/making-zio-akka-slick-play-together-nicely-part-1-zio-and-slick/
 https://github.com/jczuchnowski/zio-akka-slick-app
 
